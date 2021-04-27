@@ -12,16 +12,15 @@
         <a href="/logs/new">Create a new Captain's Log</a>
     </nav>
     <ul>
-        <% for(let i=0; i<Data.length; i++) {%>
+        <% Data.forEach((logShow, index) => { %>
             <li>
-                Here is <%=Data[i].title; %> and <%=Data[i].entry; %>
-            <% if (Data[i].shipIsBroken === true) { %>
-                The Ship is broken
-            <% } else { %>
-                The Ship is not broken
-            <% } %>
+                <a href= "/logs/<%=index%>"> <%= logShow.title %></a>
+                <form action="/logs/<%= index %>?_method=DELETE" method="POST">
+                <input type="submit" value= "DELETE"/>
+            </form>
+            <a href="/logs/<%=index%>/edit">Edit</a>
             </li>
-    <% } %>
+    <% }) %>
     </p>
     
 </body>

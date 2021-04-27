@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,13 +9,17 @@
 <body>
     <h1>Captain's Logs show page</h1>
     <p>
-        The <%= logs.title %> is <%= logs.entry %>.
-        <% if (logs.shipIsBroken === true) { %>
+        This is <%= logShow.title %>. </br>
+        Data entry:
+        <ul>
+        <li><%= logShow.entry %>. </li>
+        <li> <% if (logShow.shipIsBroken === true) { %>
         <span>This ship is broken. </span>
-    <% } else { %>
-    <span>This ship is not broken.</span>
-    <% } %>
+        <% } else { %>
+        <span>This ship is not broken.</span>
+    <% } %></li>
+</ul>
     <a href = "/logs">Back to Index</a>
     </p>
 </body>
-</html> -->
+</html>

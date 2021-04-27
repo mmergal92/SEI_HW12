@@ -46,6 +46,16 @@ app.get('/logs', (req, res) => {
   });
 });
 
+//Show Route
+app.get('/logs/:id', (req,res)=>{
+    logsData.find({}, (err, logsDatas) =>{
+      res.render('show.ejs',{
+        logShow: logsDatas[req.params.id]
+    })
+  });
+  console.log('show route works')
+});
+
 // Create route
 // app.post('/logs', (req, res) =>{
 //     console.log('create route accessed');
