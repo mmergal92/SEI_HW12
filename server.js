@@ -38,7 +38,7 @@ app.use(express.urlencoded({extended:true}));
 
 //Index Route for mongodb
 app.get('/logs', (req, res) => {
-  console.log("index works")
+  // console.log("index works")
   logsData.find({}, (err, logsDatas) => {
       res.render('index.ejs', {
         Data: logsDatas,
@@ -53,7 +53,7 @@ app.get('/logs/:id', (req,res)=>{
         logShow: logsDatas[req.params.id]
     })
   });
-  console.log('show route works')
+  // console.log('show route works')
 });
 
 // Create route
@@ -77,7 +77,7 @@ app.get('/logs/new', (req, res)=>{
 
 //Create route updated for MongoDB POST
 app.post('/logs', (req, res) =>{
-    console.log('create route accessed');
+    // console.log('create route accessed');
     if(req.body.shipIsBroken === 'on'){
       req.body.shipIsBroken = true
   } else { 
@@ -88,6 +88,27 @@ app.post('/logs', (req, res) =>{
     res.redirect('/logs/');
     });
 });
+//UPDATE LAB 
+// app.put('/labs/:id', (req, res) => { 
+// 	if(req.body.shipIsBroken === 'on'){ 
+// 		req.body.shipIsBroken = true
+// 	} else { 
+// 		req.body.shipIsBroken = false
+// 	}
+// 	logsDatas[req.params.index] = req.body 
+// 	res.redirect('/logs/'); 
+// })
+
+//UPDATE LAB - EDIT
+app.get('/labs/:id/edit', (req, res)=>{
+  logsData.find({}, (err, logsDatas)=>{
+    res.render('edit.ejs',{
+      logShow: logsDatas[req.params.id],
+      index: req.params.id,
+    })
+    console.log('edit route shows')
+  })
+})
 
 //Adding Intial Data to MongoDB
 

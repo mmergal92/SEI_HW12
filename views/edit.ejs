@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+    </head>
+    <body>
+      <h1>Edit Logs Page</h1>
+      <!-- <form action="/fruits" method="POST"> -->
+        <form action="/logs/<%=index%>?_method=PUT" method="POST">
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title" value="<%=logShow.title%>"/>
+        <label for="entry">Entry</label>
+        <input type="textarea" name="entry" id="entry" value="<%=logShow.entry%>"/>
+        <label for="shipIsBroken">Is this ship Broken?</label>
+        <input type="checkbox" name="shipIsBroken" id="shipIsBroken"
+        <% if(logShow.shipIsBroken === true){ %>
+  				checked
+  			<% } %>
+        />
+        <input type="submit" value="Edit Log"/>
+      </form>
+    </body>
+</html>
