@@ -33,15 +33,24 @@ app.use(express.urlencoded({extended:true}));
 //ROUTES
 //Index route
 // app.get('/logs', (req, res) =>{
-//     res.send(req.body)
+//     res.render('index.ejs')
 // })
 
-//New route
-// app.get('/logs/new', (req, res)=>{
-//     res.render('new.ejs')
-// })
+//Index Route for mongodb
+app.get('/logs', (req, res) => {
+  logsData.find({}, (err, logsData) => {
+      res.render('index.ejs', {
+        Data: logsData,
+      });
+  });
+});
 
-//Create route
+// New route
+app.get('/logs/new', (req, res)=>{
+    res.render('new.ejs')
+})
+
+// Create route
 // app.post('/logs', (req, res) =>{
 //     console.log('create route accessed');
 //     if(req.body.shipIsBroken === 'on'){
@@ -55,28 +64,20 @@ app.use(express.urlencoded({extended:true}));
 // })
 
 //Create route updated for MongoDB POST
-// app.post('/logs', (req, res) =>{
-//     console.log('create route accessed');
-//     if(req.body.shipIsBroken === 'on'){
-//         req.body.shipIsBroken = true
-//     } else { 
-//         req.body.shipIsBroken = false
-//     }
-//     logsData.create(req.body, (req, res) =>{
-//         res.send(req.body);
-//     });
-// });
+app.post('/logs', (req, res) =>{
+    console.log('create route accessed');
+    if(req.body.shipIsBroken === 'on'){
+        req.body.shipIsBroken = true
+    } else { 
+        req.body.shipIsBroken = false
+    }
+    logsData.create(req.body, (req, res) =>{
+        res.redirect('/logs');
+    });
+    console.log(logsData)
+});
 
-//Index Route for mongodb
-// app.get('/logs', (req, res) => {
-//     logsData.find({}, (allData) => {
-//         res.render('index.ejs', {
-//             log: allData
-//         });
-//     });
-// });
-
-//Create route upgraded for MongoDB
+//Adding Intial Data to MongoDB
 
 // app.get('/logs/', (req,res) => {
 //     console.log(req.body)

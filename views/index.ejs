@@ -8,6 +8,21 @@
 </head>
 <body>
     <h1>Captain Index</h1>
+    <nav>
+        <a href="/logs/new">Create a new Captain's Log</a>
+    </nav>
+    <ul>
+        <% for(let i=0; i<Data.length; i++) {%>
+            <li>
+                Here is <%=Data[i].title; %> and <%=Data[i].entry; %>
+            <% if (Data[i].shipIsBroken === true) { %>
+                The Ship is broken
+            <% } else { %>
+                The Ship is not broken
+            <% } %>
+            </li>
+    <% } %>
+    </p>
     
 </body>
 </html>
