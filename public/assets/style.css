@@ -1,0 +1,27 @@
+body{
+    background-color: lightcyan;
+    text-align: center;
+    padding: 10px;
+}
+h1{
+    color: navy;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+ul{
+    /* border: solid 1px black; */
+    list-style: none;
+    justify-content: center;
+    padding: 10px;
+}
+li{
+    padding: 10px
+}
+/* a:link{
+    text-decoration: none;
+} */
+a:hover{
+    color: lightskyblue;
+}
+p{
+    color: lightsalmon;
+}

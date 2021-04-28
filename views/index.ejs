@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href= "/public/assets/style.css" rel="stylesheet" type="text/css" />
     <title>Index page for Captain's Log</title>
 </head>
 <body>
@@ -12,15 +13,15 @@
         <a href="/logs/new">Create a new Captain's Log</a>
     </nav>
     <ul>
-        <% Data.forEach((logShow, index) => { %>
+        <% for(let i=0; i<Data.length; i++){ %>
             <li>
-                <a href= "/logs/<%=index%>"> <%= logShow.title %></a>
-                <form action="/logs/<%= index %>?_method=DELETE" method="POST">
+                <a href= "/logs/<%=Data[i].id%>"> <%= Data[i].title %></a> </br>
+                <form action="/logs/<%= Data[i].id %>?_method=DELETE" method="POST">
                 <input type="submit" value= "DELETE"/>
             </form>
-            <a href="/logs/<%=index%>/edit">Edit</a>
-            </li>
-    <% }) %>
+            <a href="/logs/<%=Data[i].id%>/edit">Edit</a>            
+        </li>
+    <% } %>
     </p>
     
 </body>

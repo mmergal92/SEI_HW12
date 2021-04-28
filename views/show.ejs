@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href= "/public/assets/style.css" rel="stylesheet" type="text/css" />
     <title>Captain's Log Show</title>
 </head>
 <body>
     <h1>Captain's Logs show page</h1>
     <p>
-        This is <%= logShow.title %>. </br>
+        This is <%= logShow.title%>. </br>
         Data entry:
         <ul>
-        <li><%= logShow.entry %>. </li>
+        <li><%= logShow.entry%>. </li>
         <li> <% if (logShow.shipIsBroken === true) { %>
         <span>This ship is broken. </span>
         <% } else { %>

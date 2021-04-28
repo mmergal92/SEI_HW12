@@ -3,6 +3,8 @@ const express = require ('express');
 const app = express ();
 const PORT = 3000;
 const mongoose = require('mongoose');
+//DELETE + UPDATE
+const methodOverride = require('method-override');
 
 //CONFIGURATION
 mongoose.connect('mongodb://localhost:27017/basiccrud', 
@@ -10,9 +12,9 @@ mongoose.connect('mongodb://localhost:27017/basiccrud',
 // mongoose.connection.once('open', () => {
 //     console.log('conected to mongo');
 // });
-const db = mongoose.connection;
 
 // Connection Error/Success
+const db = mongoose.connection;
 db.on('error', (err) => console.log(err.message + ' is Mongod not running?'));
 db.on('connected', () => console.log('mongo connected'));
 db.on('disconnected', () => console.log('mongo disconnected'));
@@ -25,10 +27,15 @@ const logsData = require('./models/logs.js');
 
 //MIDDLEWARE
 app.use(express.urlencoded({extended:true}));
-// app.use((req,res,next) =>{
-//     console.log("running middleware")
-//     next();
-// })
+app.use((req,res,next) =>{
+    console.log("running middleware")
+    next();
+})
+//for DELETE + UPDATE
+app.use(methodOverride('_method'))
+
+//For styling
+app.use('/public', express.static('public'));
 
 //ROUTES
 //Index route
@@ -39,22 +46,13 @@ app.use(express.urlencoded({extended:true}));
 //Index Route for mongodb
 app.get('/logs', (req, res) => {
   // console.log("index works")
-  logsData.find({}, (err, logsDatas) => {
+  logsData.find({}, (err, allLogs) => {
       res.render('index.ejs', {
-        Data: logsDatas,
+        Data: allLogs,
       });
   });
 });
 
-//Show Route
-app.get('/logs/:id', (req,res)=>{
-    logsData.find({}, (err, logsDatas) =>{
-      res.render('show.ejs',{
-        logShow: logsDatas[req.params.id]
-    })
-  });
-  // console.log('show route works')
-});
 
 // Create route
 // app.post('/logs', (req, res) =>{
@@ -75,9 +73,20 @@ app.get('/logs/new', (req, res)=>{
   res.render('new.ejs')
 })
 
+
+//Show Route
+app.get('/logs/:id', (req,res)=>{
+  logsData.findById(req.params.id, (err, oneLogFound) =>{
+    res.render('show.ejs',{
+      logShow: oneLogFound,
+  })
+});
+// console.log('show route works')
+});
+
 //Create route updated for MongoDB POST
 app.post('/logs', (req, res) =>{
-    // console.log('create route accessed');
+    console.log('create route accessed');
     if(req.body.shipIsBroken === 'on'){
       req.body.shipIsBroken = true
   } else { 
@@ -88,30 +97,48 @@ app.post('/logs', (req, res) =>{
     res.redirect('/logs/');
     });
 });
-//UPDATE LAB 
-// app.put('/labs/:id', (req, res) => { 
-// 	if(req.body.shipIsBroken === 'on'){ 
-// 		req.body.shipIsBroken = true
-// 	} else { 
-// 		req.body.shipIsBroken = false
-// 	}
-// 	logsDatas[req.params.index] = req.body 
-// 	res.redirect('/logs/'); 
-// })
 
 //UPDATE LAB - EDIT
-app.get('/labs/:id/edit', (req, res)=>{
-  logsData.find({}, (err, logsDatas)=>{
+app.get('/logs/:id/edit', async(req, res)=>{
+  logsData.findById(req.params.id, (err, oneLogs)=>{
+    console.log(oneLogs)
     res.render('edit.ejs',{
-      logShow: logsDatas[req.params.id],
-      index: req.params.id,
+      logShow: oneLogs,
     })
     console.log('edit route shows')
   })
 })
 
-//Adding Intial Data to MongoDB
+//UPDATE LAB 
+app.put('/logs/:id', (req, res) => { 
+	if(req.body.shipIsBroken === 'on'){ 
+		req.body.shipIsBroken = true
+	} else { 
+		req.body.shipIsBroken = false
+	}
+	logsData.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updateLog) =>{
+    if (err){
+      res.send(err)
+    }else{
+      res.redirect('/logs/' + req.params.id); 
+    }
+  })
+});
 
+//DELETE
+app.delete('/logs/:id', (req,res) =>{
+  // need to find the mongoID to find and remove
+  logsData.deleteOne({_id:req.params.id}, (err, deletedLog)=>{
+    if (err){
+      res.send(err)
+    }else{
+    // console.log(logsData);
+    res.redirect('/logs/');
+  }
+  });
+})
+
+//Adding Intial Data to MongoDB
 // app.get('/logs/', (req,res) => {
 //     console.log(req.body)
 //     console.log(res.body)
